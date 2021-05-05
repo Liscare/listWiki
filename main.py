@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
 import json
+from datetime import datetime, timezone
 
 
 def fetch_wiki():
@@ -34,5 +35,17 @@ def write_wikis(wikis, file_name="wiki_list.json"):
         f.close()
 
 
+def write_wikis_with_date(wikis, file_name="wiki_list.json"):
+    """
+    Create or overwrite a file to write the wikis object as JSON
+
+    :param file_name: Name of the created/overwritten file
+    :param wikis: A dict to write in JSON
+    :return: None
+    """
+    wikis_date = {"date": datetime.now(tz=timezone.utc).strftime("%d/%m/%Y %H:%M:%S %Z%z"), "wikis": wikis}
+    write_wikis(wikis_date, file_name=file_name)
+
+
 if __name__ == "__main__":
-    write_wikis(fetch_wiki())
+    write_wikis_with_date(fetch_wiki())
